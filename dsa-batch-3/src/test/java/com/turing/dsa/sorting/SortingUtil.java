@@ -4,7 +4,7 @@ import java.util.Random;
 
 public class SortingUtil {
 
-	static int[] randomArray(int size)
+	public static int[] randomArray(int size)
 	{
 		Random random =new Random();
 		int arr [] = new int[size];
@@ -14,7 +14,7 @@ public class SortingUtil {
 		}
 		return arr;
 	}
-	static boolean isSorted(int []input)
+	public static boolean isSorted(int []input)
 	{
 		
 		for(int i=0;i<input.length-1;i++)
