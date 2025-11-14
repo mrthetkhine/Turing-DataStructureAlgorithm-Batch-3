@@ -31,6 +31,11 @@ public class Node {
 	{
 		return this.left == null&& this.right == null;
 	}
+	@Override
+	public String toString() {
+		return "Node [value=" + value + ", left=" + left + ", right=" + right + "]";
+	}
+	
 	
 	
 }

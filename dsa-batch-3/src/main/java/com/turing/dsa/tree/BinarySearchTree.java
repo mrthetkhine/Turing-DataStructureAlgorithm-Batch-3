@@ -236,13 +236,13 @@ public class BinarySearchTree {
 			 * Root left right
 			 * */
 			Stack<Node> stack = new Stack<>();
-			while( current != null)
+			while( current != null || !stack.isEmpty())
 			{
-				//System.out.println("Current "+current.value);
+				System.out.println("Current "+current);
 				if(!this.visisted.contains(current))
 				{
 					this.visisted.add(current);
-					System.out.println("Visited "+current.value);
+					System.out.println("Visited "+current);
 					//System.out.println("Left of "+current.value + " "+current.getLeft().value);
 					if(current.getLeft() != null)
 					{
@@ -251,29 +251,115 @@ public class BinarySearchTree {
 						current = current.getLeft();
 						System.out.println("Go to left "+current.value);
 					}
+					else if(current.getRight() != null)
+					{
+						System.out.println("This case "+current.getRight());
+						current = current.getRight();
+					}
 					else
 					{
 						//Go to  right
-						while(!stack.isEmpty())
+						if(!stack.isEmpty())
 						{
-							Node parent = stack.pop();
-							System.out.println("Pop parent "+parent.value);
-							if(parent.right != null)
+							current = null;
+							while(!stack.isEmpty())
 							{
-								current = parent.right;
-								break;
+								Node parent = stack.pop();
+								System.out.println("Pop parent "+parent);
+								if(parent.right != null)
+								{
+									current = parent.right;
+									break;
+								}
+								
+								//break;
 							}
 							
-							
+						}
+						else
+						{
+							current = null;
 						}
 					}
 				}
+				
+				
+				
+			}
+			
+		}
+		@Override
+		public boolean hasNext() {
+			
+			return !this.visisted.isEmpty();
+		}
+
+		
+		@Override
+		public Node next() {
+			return this.visisted.remove(0);
+		}
+
+		
+	}
+	public Iterator<Node> inOrderIterative() {
+		
+		return new InorderTraversalIterative();
+	}
+	class InorderTraversalIterative implements Iterator<Node>
+	{
+	
+		List<Node> visisted = new ArrayList<Node>();
+		
+		InorderTraversalIterative()
+		{
+			
+			this.traverse(root);
+		}
+		void traverse(Node current)
+		{
+			/*
+			 * Root left right
+			 * */
+			Stack<Node> stack = new Stack<>();
+			
+			while( current != null || !stack.isEmpty())
+			{
+				while(current.left != null)
+				{
+					stack.push(current);
+					System.out.println("Push current "+current);
+					System.out.println("Move to left "+current.left);
+					current = current.left;
+					
+				}
+				System.out.println("Visited "+current);
+				this.visisted.add(current);
+				if(current.right != null)
+				{
+					System.out.println("Move to right "+current.right);
+					current = current.right;
+				}
 				else
 				{
-					break;
+					System.out.println("This case no");
+					current = null;
+					while(!stack.isEmpty())
+					{
+						Node root = stack.pop();
+						System.out.println("Pop from stack "+root);
+						System.out.println("Visited "+root);
+						this.visisted.add(root);
+						
+						if(root.getRight() != null)
+						{
+							System.out.println("Move to root right "+root.getRight());
+							current = root.getRight();
+							break;
+						}
+						
+					}
 				}
-				
-				
 			}
 			
 		}

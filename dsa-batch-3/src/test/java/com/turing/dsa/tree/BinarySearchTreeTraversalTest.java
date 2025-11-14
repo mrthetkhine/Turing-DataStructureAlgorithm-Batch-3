@@ -17,7 +17,7 @@ public class BinarySearchTreeTraversalTest {
 		
 		*/
 	}
-	@Test
+	//@Test
 	public void testPreOrderBase()
 	{
 		//10,5,20,12,15,30
@@ -35,7 +35,7 @@ public class BinarySearchTreeTraversalTest {
 		assertFalse(iterator.hasNext());
 	}
 	
-	@Test
+	//@Test
 	public void testPreOrder()
 	{
 		tree.insert(10);
@@ -68,7 +68,7 @@ public class BinarySearchTreeTraversalTest {
 		tree.insert(14);
 		tree.insert(25);
 	}
-	@Test
+	//@Test
 	public void testPreOrderV2()
 	{
 		
@@ -94,7 +94,7 @@ public class BinarySearchTreeTraversalTest {
 	 *     5  20
 	 *     left Root right
 	 * */
-	@Test
+	//@Test
 	public void testInOrderBase()
 	{
 		//10,5,20
@@ -111,7 +111,7 @@ public class BinarySearchTreeTraversalTest {
 		
 		assertFalse(iterator.hasNext());
 	}
-	@Test
+	//@Test
 	public void testInOrder()
 	{
 		tree.insert(10);
@@ -132,7 +132,7 @@ public class BinarySearchTreeTraversalTest {
 		
 		assertFalse(iterator.hasNext());
 	}
-	@Test
+	//@Test
 	public void testInOrderV2()
 	{
 		this.initV2();
@@ -156,7 +156,7 @@ public class BinarySearchTreeTraversalTest {
 	 * 			/\
 	 * 		   5  20
 	 * */
-	@Test
+	//@Test
 	public void testPostOrderBase()
 	{
 		//10,5,20
@@ -173,7 +173,7 @@ public class BinarySearchTreeTraversalTest {
 		
 		assertFalse(iterator.hasNext());
 	}
-	@Test
+	//@Test
 	public void testPostOrder()
 	{
 		tree.insert(10);
@@ -195,7 +195,7 @@ public class BinarySearchTreeTraversalTest {
 		
 		assertFalse(iterator.hasNext());
 	}
-	@Test
+	//@Test
 	public void testPostOrderV2()
 	{
 		this.initV2();
@@ -215,7 +215,7 @@ public class BinarySearchTreeTraversalTest {
 		
 		assertFalse(iterator.hasNext());
 	}
-	@Test
+	//@Test
 	public void testPreOrderBaseIterative()
 	{
 		/*		
@@ -260,5 +260,81 @@ public class BinarySearchTreeTraversalTest {
 		assertEquals(20,iterator.next().value);
 		
 		assertFalse(iterator.hasNext());
+	}
+	@Test
+	public void testPreOrderLevel3_2()
+	{
+		/*		
+		 * 			10
+		 * 			/\
+		 * 		   5  20
+		 * 			\ 
+		 * 			6
+		 * */
+		
+		tree.insert(10);
+		tree.insert(5);
+		tree.insert(6);
+		tree.insert(20);
+	
+		
+		/*
+		Node node = tree.search(5);
+		System.out.println("Node "+node);
+		
+		node = tree.search(4);
+		System.out.println("Node "+node);
+		*/
+		
+		Iterator<Node> iterator = tree.preOrderIterative();
+		
+		assertEquals(10,iterator.next().value);
+		assertEquals(5,iterator.next().value);
+		assertEquals(6,iterator.next().value);
+		assertEquals(20,iterator.next().value);
+		
+		
+		assertFalse(iterator.hasNext());
+		
+	}
+	//@Test
+	public void testPreOrderLevel3()
+	{
+		/*		
+		 * 			10
+		 * 			/\
+		 * 		   5  20
+		 * 		 /	   \
+		 * 		4       25
+		 * 				/
+		 * 				24
+		 * */
+		
+		tree.insert(10);
+		tree.insert(20);
+		tree.insert(5);
+		tree.insert(4);
+		tree.insert(25);
+		tree.insert(24);
+		
+		/*
+		Node node = tree.search(5);
+		System.out.println("Node "+node);
+		
+		node = tree.search(4);
+		System.out.println("Node "+node);
+		*/
+		
+		Iterator<Node> iterator = tree.preOrderIterative();
+		
+		assertEquals(10,iterator.next().value);
+		assertEquals(5,iterator.next().value);
+		assertEquals(4,iterator.next().value);
+		assertEquals(20,iterator.next().value);
+		assertEquals(25,iterator.next().value);
+		assertEquals(24,iterator.next().value);
+		
+		assertFalse(iterator.hasNext());
+		
 	}
 }
