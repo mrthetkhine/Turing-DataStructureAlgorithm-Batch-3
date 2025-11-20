@@ -377,4 +377,82 @@ public class BinarySearchTree {
 
 		
 	}
+	public Iterator<Node> postOrderIterative() {
+		
+		return new PostOrderTraversalIterative();
+	}
+	class PostOrderTraversalIterative implements Iterator<Node>
+	{
+	
+		List<Node> visisted = new ArrayList<Node>();
+		
+		PostOrderTraversalIterative()
+		{
+			
+			this.traverse(root);
+		}
+		void traverse(Node current)
+		{
+			/*
+			 * Root left right
+			 * */
+			Stack<Node> stack = new Stack<>();
+			
+			while( current != null || !stack.isEmpty())
+			{
+				if(current.left != null && !this.visisted.contains(current.left))
+				{
+					while(current.left !=null)
+					{
+						System.out.println("Push current root "+current);
+						stack.push(current);
+						
+						if(current.right != null)
+						{
+							System.out.println("Push current right "+current.right);
+							stack.push(current.right);
+						}
+						current = current.left;
+					}
+				}
+				else if(current.right != null && !this.visisted.contains(current.right))
+				{
+					System.out.println("Push current root "+current);
+					stack.push(current);
+					
+					System.out.println("Push current right "+current.right);
+					stack.push(current.right);
+				}
+				
+				
+				current = null;
+				if(! stack.isEmpty())	
+				{
+					Node item = stack.pop();
+					System.out.println("Pop from stack "+item);
+					current = item;
+				}
+				
+				if(current != null && !this.visisted.contains(current))
+				{
+					System.out.println("Visited "+current);
+					this.visisted.add(current);
+				}
+			}
+			
+		}
+		@Override
+		public boolean hasNext() {
+			
+			return !this.visisted.isEmpty();
+		}
+
+		
+		@Override
+		public Node next() {
+			return this.visisted.remove(0);
+		}
+
+		
+	}
 }
