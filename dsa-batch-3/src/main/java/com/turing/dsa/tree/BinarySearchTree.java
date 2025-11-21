@@ -397,47 +397,46 @@ public class BinarySearchTree {
 			 * Root left right
 			 * */
 			Stack<Node> stack = new Stack<>();
-			
+			List<Node> traversed = new ArrayList<>();
 			while( current != null || !stack.isEmpty())
 			{
-				if(current.left != null && !this.visisted.contains(current.left))
+				if(current.isLeaf())
 				{
-					while(current.left !=null)
+					System.out.println("Visited current "+current);
+					this.visisted.add(current);
+				}
+				else if(!traversed.contains(current))
+				{
+					System.out.println("push root "+current);
+					System.out.println("Add to traversed "+current);
+					stack.push(current);
+					traversed.add(current);
+					
+					if(current.right != null)
 					{
-						System.out.println("Push current root "+current);
-						stack.push(current);
-						
-						if(current.right != null)
-						{
-							System.out.println("Push current right "+current.right);
-							stack.push(current.right);
-						}
-						current = current.left;
+						System.out.println("push right "+current.right);
+						stack.push(current.right);
+					}
+					if(current.left !=null)
+					{
+						System.out.println("push left "+current.left);
+						stack.push(current.left);
 					}
 				}
-				else if(current.right != null && !this.visisted.contains(current.right))
+				else
 				{
-					System.out.println("Push current root "+current);
-					stack.push(current);
-					
-					System.out.println("Push current right "+current.right);
-					stack.push(current.right);
+					System.out.println("Visited current "+current);
+					this.visisted.add(current);
 				}
 				
 				
 				current = null;
-				if(! stack.isEmpty())	
+				if(!stack.isEmpty())
 				{
-					Node item = stack.pop();
-					System.out.println("Pop from stack "+item);
-					current = item;
+					current = stack.pop();
+					System.out.println("Pop from stack "+current);
 				}
 				
-				if(current != null && !this.visisted.contains(current))
-				{
-					System.out.println("Visited "+current);
-					this.visisted.add(current);
-				}
 			}
 			
 		}
@@ -454,5 +453,84 @@ public class BinarySearchTree {
 		}
 
 		
+	}
+	public int getMinValue() {
+		Node current = this.root;
+		while(current.left != null)
+		{
+			current = current.left;
+		}
+		return current.value;
+	}
+	public int getMaxValue() {
+		Node current = this.root;
+		while(current.right != null)
+		{
+			current = current.right;
+		}
+		return current.value;
+	}
+	public void delete(int value) {
+		Node parent =null;
+		Node current = this.root;
+		
+		while(current !=null)
+		{
+			if(current.value == value)
+			{
+				break;
+			}
+			else if(value < current.value )
+			{
+				parent = current;
+				current = current.left;
+			}
+			else if(value > current.value)
+			{
+				parent = current;
+				current = current.right;
+			}
+		}
+		if(current == null )//Not found
+		{
+			System.out.print("Not found "+value);
+		}
+		else//Found
+		{
+			if(current.isLeaf())
+			{
+				System.out.println("Delete leaf");
+				if(current.value < parent.value)//left child
+				{
+					System.out.println("Delete left child");
+					parent.left = null;
+				}
+				else if(current.value > parent.value)
+				{
+					System.out.println("Delete right child");
+					parent.right = null;
+				}
+			}
+			else
+			{
+				System.out.println("Non leaf case");
+				if(current.right != null)
+				{
+					
+					int rightChildValue = current.right.value;
+					System.out.println("Promote right Child "+current.right);
+					
+					this.delete(rightChildValue);
+					current.value = rightChildValue;
+				}
+				else 
+				{
+					int leftChildValue = current.left.value;
+					System.out.println("Promote left Child "+current.left);
+					this.delete(leftChildValue);
+					current.value = leftChildValue;
+				}
+			}
+		}
 	}
 }
