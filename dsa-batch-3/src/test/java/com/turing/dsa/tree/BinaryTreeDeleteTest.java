@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 public class BinaryTreeDeleteTest {
 	BinarySearchTree tree = new BinarySearchTree();
 	
+	
 	@Test
 	public void testDeleteLeafRightChild()
 	{
@@ -69,7 +70,59 @@ public class BinaryTreeDeleteTest {
 
 	}
 	@Test
-	public void testDeleteNonLeafPromoteRightChild()
+	public void testSuccessorBase()
+	{
+		/*		
+		 * 			5
+		 * 			/\
+		 * 		   4  10
+		 * 			 / \
+		 * 	        9   15	
+		 * */
+		tree.insert(5);
+		tree.insert(4);
+		tree.insert(10);
+		tree.insert(9);
+		tree.insert(15);
+		
+		Node successor = tree.getSuccessor(5);
+		assertEquals(9,successor.value);
+		
+		successor = tree.getSuccessor(10);
+		assertEquals(15,successor.value);
+	}
+	@Test
+	public void testSuccessorMoreDepth()
+	{
+		/*		
+		 * 			5
+		 * 			/\
+		 * 		   4  10
+		 * 			 / \
+		 * 	        9   15	
+		 * 				/\
+		 * 			   13 20
+		 * */
+		
+		tree.insert(5);
+		tree.insert(4);
+		tree.insert(10);
+		tree.insert(9);
+		tree.insert(15);
+		tree.insert(13);
+		tree.insert(20);
+		
+		
+		Node successor = tree.getSuccessor(5);
+		assertEquals(9,successor.value);
+		
+		successor = tree.getSuccessor(10);
+		assertEquals(13,successor.value);
+	
+
+	}
+	@Test
+	public void testDeleteTwoChild()
 	{
 		/*		
 		 * 			5
@@ -141,8 +194,8 @@ public class BinaryTreeDeleteTest {
 	
 
 	}
-	@Test
-	public void testDeleteNonLeafPromoteRightChildMoreDepth()
+	//@Test
+	public void testDeleteWithSuccesorMoreDepth()
 	{
 		/*		
 		 * 			5
@@ -167,29 +220,30 @@ public class BinaryTreeDeleteTest {
 		/*		
 		 * 			5
 		 * 			/\
-		 * 		   4  15
+		 * 		   4  13
 		 * 			 / \
-		 * 	        9  	20
-		 * 				/
-		 * 			   13
+		 * 	        9  	15
+		 * 				/\
+		 * 			      20
 		 * */
 		Iterator<Node> iterator = tree.inOrderIterative();
 		
 		assertEquals(4,iterator.next().value);
 		assertEquals(5,iterator.next().value);
 		assertEquals(9,iterator.next().value);
-		assertEquals(15,iterator.next().value);
 		assertEquals(13,iterator.next().value);
+		assertEquals(15,iterator.next().value);
 		assertEquals(20,iterator.next().value);
 		
 		assertFalse(iterator.hasNext());
 	
 
 	}
+	
 	@Test
-	public void testDeleteNonLeafPromoteRightChildMoreDepth2()
+	public void testDeleteWithSuccesorMoreDepth2()
 	{
-		/*		
+		/*
 		 * 			5
 		 * 			/\
 		 * 		   4  15
@@ -197,7 +251,7 @@ public class BinaryTreeDeleteTest {
 		 * 	        9   20	
 		 * 			 \ 	
 		 * 			  13 
-		 * */
+		 */ 
 		
 		tree.insert(5);
 		tree.insert(4);
@@ -209,15 +263,15 @@ public class BinaryTreeDeleteTest {
 		
 		tree.delete(15);
 		
-		/*		
+		 /*
 		 * 			5
 		 * 			/\
 		 * 		   4  20
 		 * 			 / \
 		 * 	        9  	
-		 * 			/
-		 *         13	
-		 * */
+		 * 			 \
+		 *            13
+		 */ 
 		Iterator<Node> iterator = tree.inOrderIterative();
 		
 		assertEquals(4,iterator.next().value);
@@ -230,10 +284,11 @@ public class BinaryTreeDeleteTest {
 	
 
 	}
+	
 	@Test
 	public void testDeleteRoot()
 	{
-		/*		
+	     /*			
 		 * 			5
 		 * 			/\
 		 * 		   4  15
@@ -241,7 +296,7 @@ public class BinaryTreeDeleteTest {
 		 * 	        9   20	
 		 * 			 \ 	
 		 * 			  13 
-		 * */
+		 */ 
 		
 		tree.insert(5);
 		tree.insert(4);
@@ -254,36 +309,36 @@ public class BinaryTreeDeleteTest {
 		tree.delete(5);
 		
 		/*		
-		 * 			15
+		 * 			9
 		 * 			/\
-		 * 		   4  20
+		 * 		   4  15
 		 * 			 / \
-		 * 	        9   	
-		 * 			 \ 	
-		 * 			  13 
-		 * */
+		 * 	        13   20	
+		 * 			  
+		 */ 
 		Iterator<Node> iterator = tree.inOrderIterative();
 		
 		assertEquals(4,iterator.next().value);
-		assertEquals(15,iterator.next().value);
 		assertEquals(9,iterator.next().value);
 		assertEquals(13,iterator.next().value);
+		assertEquals(15,iterator.next().value);
 		assertEquals(20,iterator.next().value);
 		
 		assertFalse(iterator.hasNext());
 	
 
 	}
+	
 	@Test
 	public void testDeleteRootPromoteLeft()
 	{
-		/*		
+		 /*		
 		 * 			15
 		 * 			/\
 		 * 		   10 
 		 * 	      /  \
 		 *        8  12
-		 * */
+		 */
 		
 		tree.insert(15);
 		tree.insert(10);
@@ -292,25 +347,23 @@ public class BinaryTreeDeleteTest {
 		
 	
 		
-		tree.delete(5);
+		tree.delete(15);
 		
-		/*		
+	     /*			
 		 * 			10
 		 * 			/\
 		 * 		   12
 		 * 	      /  \
 		 *        8  
-		 * */
+		 */	
 		Iterator<Node> iterator = tree.inOrderIterative();
 		
-		assertEquals(4,iterator.next().value);
-		assertEquals(15,iterator.next().value);
-		assertEquals(9,iterator.next().value);
-		assertEquals(13,iterator.next().value);
-		assertEquals(20,iterator.next().value);
+		assertEquals(8,iterator.next().value);
+		assertEquals(12,iterator.next().value);
+		assertEquals(10,iterator.next().value);
 		
 		assertFalse(iterator.hasNext());
 	
-
 	}
+	
 }

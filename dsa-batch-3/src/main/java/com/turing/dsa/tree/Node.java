@@ -31,6 +31,28 @@ public class Node {
 	{
 		return this.left == null&& this.right == null;
 	}
+	int getChildCount()
+	{
+		int count = 0;
+		if(this.left != null)
+		{
+			count ++;
+		}
+		if(this.right != null)
+		{
+			count ++;
+		}
+		return count;
+	}
+	public boolean isOneChild()
+	{
+		
+		return this.getChildCount() == 1;
+	}
+	public boolean isTwoChild()
+	{
+		return this.getChildCount() == 2;
+	}
 	@Override
 	public String toString() {
 		return "Node [value=" + value + ", left=" + left + ", right=" + right + "]";

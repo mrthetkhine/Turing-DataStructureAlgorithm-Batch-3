@@ -328,32 +328,32 @@ public class BinarySearchTree {
 				while(current.left != null)
 				{
 					stack.push(current);
-					System.out.println("Push current "+current);
-					System.out.println("Move to left "+current.left);
+					//System.out.println("Push current "+current);
+					//System.out.println("Move to left "+current.left);
 					current = current.left;
 					
 				}
-				System.out.println("Visited "+current);
+				//System.out.println("Visited "+current);
 				this.visisted.add(current);
 				if(current.right != null)
 				{
-					System.out.println("Move to right "+current.right);
+					//System.out.println("Move to right "+current.right);
 					current = current.right;
 				}
 				else
 				{
-					System.out.println("This case no");
+					//System.out.println("This case no");
 					current = null;
 					while(!stack.isEmpty())
 					{
 						Node root = stack.pop();
-						System.out.println("Pop from stack "+root);
-						System.out.println("Visited "+root);
+						//System.out.println("Pop from stack "+root);
+						//System.out.println("Visited "+root);
 						this.visisted.add(root);
 						
 						if(root.getRight() != null)
 						{
-							System.out.println("Move to root right "+root.getRight());
+							//System.out.println("Move to root right "+root.getRight());
 							current = root.getRight();
 							break;
 						}
@@ -472,65 +472,92 @@ public class BinarySearchTree {
 	}
 	public void delete(int value) {
 		Node parent =null;
-		Node current = this.root;
+		Node nodeToDelete = this.root;
 		
-		while(current !=null)
+		while(nodeToDelete !=null)
 		{
-			if(current.value == value)
+			if(nodeToDelete.value == value)
 			{
 				break;
 			}
-			else if(value < current.value )
+			else if(value < nodeToDelete.value )
 			{
-				parent = current;
-				current = current.left;
+				parent = nodeToDelete;
+				nodeToDelete = nodeToDelete.left;
 			}
-			else if(value > current.value)
+			else if(value > nodeToDelete.value)
 			{
-				parent = current;
-				current = current.right;
+				parent = nodeToDelete;
+				nodeToDelete = nodeToDelete.right;
 			}
 		}
-		if(current == null )//Not found
+		if(nodeToDelete == null )//Not found
 		{
 			System.out.print("Not found "+value);
 		}
 		else//Found
 		{
-			if(current.isLeaf())
+			if(nodeToDelete.isLeaf())
 			{
 				System.out.println("Delete leaf");
-				if(current.value < parent.value)//left child
+				if(nodeToDelete.value < parent.value)//left child
 				{
 					System.out.println("Delete left child");
 					parent.left = null;
 				}
-				else if(current.value > parent.value)
+				else if(nodeToDelete.value > parent.value)
 				{
 					System.out.println("Delete right child");
 					parent.right = null;
 				}
 			}
-			else
+			else if(nodeToDelete.isOneChild())
 			{
 				System.out.println("Non leaf case");
-				if(current.right != null)
+				if(nodeToDelete.right != null)
 				{
 					
-					int rightChildValue = current.right.value;
-					System.out.println("Promote right Child "+current.right);
+					int rightChildValue = nodeToDelete.right.value;
+					System.out.println("Promote right Child "+nodeToDelete.right);
 					
 					this.delete(rightChildValue);
-					current.value = rightChildValue;
+					nodeToDelete.value = rightChildValue;
 				}
 				else 
 				{
-					int leftChildValue = current.left.value;
-					System.out.println("Promote left Child "+current.left);
+					int leftChildValue = nodeToDelete.left.value;
+					System.out.println("Promote left Child "+nodeToDelete.left);
 					this.delete(leftChildValue);
-					current.value = leftChildValue;
+					nodeToDelete.value = leftChildValue;
 				}
 			}
+			else
+			{
+				System.out.println("This case two child");
+				Node successor = this.getSuccessor(value);
+				int successorValue = successor.value;
+				this.delete(successorValue);
+				nodeToDelete.value = successorValue;
+				
+			}
 		}
+	}
+	public Node getSuccessor(int value) {
+		Node node = this.search(value);
+		if(node.isTwoChild() && node !=null)
+		{
+			Node successor = node.right;
+			while(successor.left != null)
+			{
+				successor = successor.left;
+			}
+			return successor;
+		}
+		else
+		{
+			System.out.println("Invalid successor node");
+			return null;
+		}
+		
 	}
 }
