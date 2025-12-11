@@ -14,7 +14,7 @@ public class Node {
 	{
 		if(this.treeType < 4 && this.isLeaf())
 		{
-			return this.simpleLeafInsert(value);
+			return this.simpleInsert(value);
 		}
 		else if(this.isFourTree())
 		{
@@ -33,7 +33,21 @@ public class Node {
 		
 	}
 
-	private Node simpleLeafInsert(int value) {
+	int getPositionToInsert(int value)
+	{
+		int index = 0;
+		while(keys[index] != null 
+				&& keys[index]< value 
+				&& index < this.keys.length)
+		{
+			index ++;
+		}
+		System.out.println("getPositionToInsert nodes "+ Arrays.toString(this.keys));
+		System.out.println("getPositionToInsert to insert "+index);
+		
+		return index;
+	}
+	Node simpleInsert(int value) {
 		this.treeType ++;
 		
 		System.out.println("Value to insert---> "+value);
@@ -62,27 +76,68 @@ public class Node {
 	}
 	Node split()
 	{
-		if(this.isFourTree())
+		if(this.isFourTree() && this.parent==null)
 		{
+			System.out.println("Four Tree and no parent");
+			
 			int middleEle = this.keys[1];
 			
-			Node parent = new Node();
-			parent.insert(middleEle);
+			Node splitParent = new Node();
+			splitParent.insert(middleEle);
 			
 			Node left = new Node();
-			left.setParent(parent);
+			left.setParent(splitParent);
 			left.insert(this.keys[0]);
 			
-			parent.children.add(left);
+			splitParent.children.add(left);
 			
 			Node right = new Node();
 			
 			right.insert(this.keys[2]);
-			right.setParent(parent);
+			right.setParent(splitParent);
 			
-			parent.children.add(right);
+			splitParent.children.add(right);
 			
-			return parent;
+			return splitParent;
+		}
+		else if(this.isFourTree() && this.parent != null)
+		{
+			System.out.println("Four Tree and have parent==>");
+			System.out.println("Current leaf to insert ==> "+Arrays.toString(this.keys));
+			System.out.println("Parent  ==> "+Arrays.toString(this.parent.keys));
+			
+			int middleEle = this.keys[1];
+			System.out.println("Middle element "+middleEle);
+			if(!this.parent.isFourTree())
+			{
+				int indexToInsert = this.parent.getPositionToInsert(middleEle);
+				
+				this.parent.simpleInsert(middleEle);
+				
+				int childIndex = this.parent.children.indexOf(this);
+				
+				this.parent.children.remove(childIndex);
+				
+				Node left = new Node();
+				left.setParent(parent);
+				left.insert(this.keys[0]);
+				
+				Node right = new Node();
+				
+				right.insert(this.keys[2]);
+				right.setParent(parent);
+				
+				parent.children.add(indexToInsert, right);
+				parent.children.add(indexToInsert, left);
+				
+				
+				return parent;
+			}
+			else
+			{
+				System.out.println(">>>> parent is also 4 node");
+			}
+			
 		}
 		return this;
 		
@@ -114,9 +169,10 @@ public class Node {
 				System.out.println("Search Current=> "+Arrays.toString(current.keys));
 				int index = 0;
 				Integer[] keys = current.keys;
-				while(keys[index] != null 
+				while(	index < this.keys.length 
+						&& keys[index] != null 
 						&& keys[index] < value 
-						&& index < this.keys.length)
+						)
 				{
 					index ++;
 				}
