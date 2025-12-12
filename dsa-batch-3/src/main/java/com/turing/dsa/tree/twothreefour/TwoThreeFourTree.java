@@ -27,15 +27,15 @@ public class TwoThreeFourTree {
 		{
 			System.out.println("This case split for insert value "+value+" ===> "+Arrays.toString(nodeToInsert.keys));
 			
-			this.root = nodeToInsert.split();
+			nodeToInsert.split(this);
 			Node leafNode = this.root.searchToInsert(value); 
-			return leafNode.insert(value);
+			return leafNode.insert(value,this);
 			
 		}
 		else
 		{
 			Node leafNode = nodeToInsert.searchToInsert(value); 
-			return leafNode.insert(value);
+			return leafNode.insert(value,this);
 		}
 	}
 	

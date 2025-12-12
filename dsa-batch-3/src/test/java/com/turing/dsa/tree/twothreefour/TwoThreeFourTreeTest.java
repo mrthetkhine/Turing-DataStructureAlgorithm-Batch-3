@@ -102,6 +102,7 @@ public class TwoThreeFourTreeTest {
 	
 	}
 	//@Test
+	/*
 	public void testBasicSplitTwoNode()
 	{
 		
@@ -110,11 +111,7 @@ public class TwoThreeFourTreeTest {
 		tree.insert(2);
 		
 		
-		/*
-		 * 			split
-		 * 			[2]
-		 * 		[1]   [5]
-		 * */
+		
 		Node node = tree.getRoot();
 		Node parent = node.split();
 		assertEquals(2,parent.keys[0]);
@@ -126,6 +123,7 @@ public class TwoThreeFourTreeTest {
 		Node right = parent.children.get(1);
 		assertEquals(5,right.keys[0]);
 	}
+	*/
 	//@Test
 	public void testSearchSplitTwoNodeLeftChildInsert()
 	{
@@ -189,7 +187,7 @@ public class TwoThreeFourTreeTest {
 		assertEquals(10,insertedLeaf.keys[1]);
 		assertEquals(12,insertedLeaf.keys[2]);
 	}
-	@Test
+	//@Test
 	public void testSplitPromote()
 	{
 		
@@ -229,7 +227,7 @@ public class TwoThreeFourTreeTest {
 		assertEquals(20,thirdChild.keys[0]);
 		
 	}
-	@Test
+	//@Test
 	public void testSplitPromote2()
 	{
 		

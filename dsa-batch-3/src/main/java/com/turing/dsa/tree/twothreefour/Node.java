@@ -10,7 +10,7 @@ public class Node {
 	ArrayList<Node> children = new ArrayList<>();
 	Node parent;
 	
-	public Node insert(int value)
+	public Node insert(int value,TwoThreeFourTree tree)
 	{
 		if(this.treeType < 4 && this.isLeaf())
 		{
@@ -18,17 +18,18 @@ public class Node {
 		}
 		else if(this.isFourTree())
 		{
+			
 			System.out.println("This case split for insert value "+value+" ===> "+Arrays.toString(this.keys));
 			
-			Node parent = this.split();
+			Node parent = this.split(tree);
 			Node leafNode = parent.searchToInsert(value); 
-			return leafNode.insert(value);
+			return leafNode.insert(value,tree);
 			
 		}
 		else
 		{
 			Node leafNode = this.searchToInsert(value); 
-			return leafNode.insert(value);
+			return leafNode.insert(value,tree);
 		}
 		
 	}
@@ -74,73 +75,127 @@ public class Node {
 	{
 		return this.treeType == 4;
 	}
-	Node split()
+	
+	Node split(TwoThreeFourTree tree)
 	{
-		if(this.isFourTree() && this.parent==null)
+		if(this.isFourTree() && !this.isLeaf())
 		{
-			System.out.println("Four Tree and no parent");
+			System.out.println(">>>>>>> node split with children "+Arrays.toString(this.keys));
+			System.out.println("Children size "+this.children.size());
+		
+			ArrayList<Node> oldChildren = this.children; 
+			Node splitParent = this.splitNode(tree);
 			
-			int middleEle = this.keys[1];
+			splitWithChildren(oldChildren, splitParent);
 			
-			Node splitParent = new Node();
-			splitParent.insert(middleEle);
-			
-			Node left = new Node();
-			left.setParent(splitParent);
-			left.insert(this.keys[0]);
-			
-			splitParent.children.add(left);
-			
-			Node right = new Node();
-			
-			right.insert(this.keys[2]);
-			right.setParent(splitParent);
-			
-			splitParent.children.add(right);
+			if(tree.getRoot() == this)
+			{
+				System.out.println("Update root to "+Arrays.toString(splitParent.keys));
+				tree.setRoot(splitParent);
+			}
 			
 			return splitParent;
 		}
+		else if(this.isFourTree() && this.parent==null)
+		{
+			System.out.println("Four Tree and no parent");
+			Node splitParent = splitNode(tree);
+			if(tree.getRoot() == this)
+			{
+				System.out.println("Update root to "+Arrays.toString(splitParent.keys));
+				tree.setRoot(splitParent);
+			}
+			return splitParent;
+		}
+		
 		else if(this.isFourTree() && this.parent != null)
 		{
 			System.out.println("Four Tree and have parent==>");
 			System.out.println("Current leaf to insert ==> "+Arrays.toString(this.keys));
 			System.out.println("Parent  ==> "+Arrays.toString(this.parent.keys));
-			
+			System.out.println("Child of parent ==> "+ parent.children.size());
 			int middleEle = this.keys[1];
 			System.out.println("Middle element "+middleEle);
+			
 			if(!this.parent.isFourTree())
 			{
-				int indexToInsert = this.parent.getPositionToInsert(middleEle);
-				
-				this.parent.simpleInsert(middleEle);
-				
-				int childIndex = this.parent.children.indexOf(this);
-				
-				this.parent.children.remove(childIndex);
-				
-				Node left = new Node();
-				left.setParent(parent);
-				left.insert(this.keys[0]);
-				
-				Node right = new Node();
-				
-				right.insert(this.keys[2]);
-				right.setParent(parent);
-				
-				parent.children.add(indexToInsert, right);
-				parent.children.add(indexToInsert, left);
-				
-				
-				return parent;
+				System.out.println("-->>Parent not four tree");
+				return parentSimpleInsert(tree, middleEle);
 			}
 			else
 			{
-				System.out.println(">>>> parent is also 4 node");
+				System.out.println(">>>> parent is also 4 node ");
+				System.out.println(">>>>Split Parent "+Arrays.toString(parent.keys));
+				parent.split(tree);
+				
 			}
 			
 		}
+		
 		return this;
 		
+	}
+
+	private Node parentSimpleInsert(TwoThreeFourTree tree, int middleEle) {
+		int indexToInsert = this.parent.getPositionToInsert(middleEle);
+		
+		this.parent.simpleInsert(middleEle);
+		
+		int childIndex = this.parent.children.indexOf(this);
+		
+		this.parent.children.remove(childIndex);
+		
+		Node left = new Node();
+		left.setParent(parent);
+		left.insert(this.keys[0],tree);
+		
+		Node right = new Node();
+		
+		right.insert(this.keys[2],tree);
+		right.setParent(parent);
+		
+		parent.children.add(indexToInsert, right);
+		parent.children.add(indexToInsert, left);
+		
+		
+		return parent;
+	}
+
+	private void splitWithChildren(ArrayList<Node> oldChildren, Node splitParent) {
+		Node leftChild = splitParent.children.get(0);
+		Node rightChild = splitParent.children.get(1);
+		
+		oldChildren.get(0).setParent(leftChild);
+		oldChildren.get(1).setParent(leftChild);
+		leftChild.children.add(oldChildren.get(0));
+		leftChild.children.add(oldChildren.get(1));
+		
+		rightChild.children.add(oldChildren.get(2));
+		rightChild.children.add(oldChildren.get(3));
+		oldChildren.get(2).setParent(rightChild);
+		oldChildren.get(3).setParent(rightChild);
+	}
+
+	private Node splitNode(TwoThreeFourTree tree) {
+		int middleEle = this.keys[1];
+		
+		Node splitParent = new Node();
+		splitParent.insert(middleEle,tree);
+		
+		Node left = new Node();
+		left.setParent(splitParent);
+		left.insert(this.keys[0],tree);
+		
+		splitParent.children.add(left);
+		
+		Node right = new Node();
+		
+		right.insert(this.keys[2],tree);
+		right.setParent(splitParent);
+		
+		splitParent.children.add(right);
+		
+		return splitParent;
 	}
 	public Node getParent() {
 		return parent;
