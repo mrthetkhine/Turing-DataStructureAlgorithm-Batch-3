@@ -39,4 +39,10 @@ public class HashTable {
 		LinkedList<String> bucket = this.data[hashKey];
 		return bucket.contains(input);
 	}
+	public void delete(String input) {
+		int hashKey = hash(input,this.bucketSize);
+		LinkedList<String> bucket = this.data[hashKey];
+		bucket.remove(input);
+		
+	}
 }

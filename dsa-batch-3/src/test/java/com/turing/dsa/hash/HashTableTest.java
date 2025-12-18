@@ -29,8 +29,18 @@ public class HashTableTest {
 	@Test
 	public void testInsertUnknown()
 	{
-		//ht.insert("hello");
+	
 		
 		assertFalse(ht.contains("hello"));
+	}
+	@Test
+	public void testDelete()
+	{
+	
+		ht.insert("hello");
+		ht.delete("hello");
+		assertFalse(ht.contains("hello"));
+		
+		System.out.println("Hello".hashCode());
 	}
 }
