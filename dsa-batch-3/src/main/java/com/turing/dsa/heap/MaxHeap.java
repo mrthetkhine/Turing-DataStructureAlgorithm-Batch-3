@@ -60,11 +60,11 @@ public class MaxHeap {
 			if(left !=null && right != null)//two node
 			{
 				System.out.println("Two child case right "+right + " left "+left);
-				if(left > right)
+				if(this.items[leftIndex] > this.items[maxChildIndex])
 				{
 					maxChildIndex = leftIndex;
 				}
-				else
+				if(this.items[rightIndex]> this.items[maxChildIndex])
 				{
 					System.out.println("Right child is larger right "+right + " left "+left);
 					maxChildIndex = rightIndex;
@@ -118,33 +118,14 @@ public class MaxHeap {
 	int getIndexOfNode(int value)
 	{
 		int index = 0;
-		Integer current = items[index];
-		if(current == value)
+		for(int i=0;i< this.noOfNode;i++)
 		{
-			return index;
-		}
-		else
-		{
-			while(current != null)
+			if(this.items[i]==value)
 			{
-				if(current == value)
-				{
-					return index;
-				}
-				else if(value < current )
-				{
-					index = index * 2 +1;
-				}
-				else if(value > current)
-				{
-					index = index * 2+ 2;
-				}
-				current = this.items[index];
+				return i;
 			}
-			return index;
-			
 		}
-		
+		return -1;
 	}
 	public Integer leftOf(int value) {
 		int indexOfParent = this.getIndexOfNode(value);

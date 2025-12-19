@@ -297,5 +297,84 @@ public class MaxHeapTest {
 		
 		assertEquals(18,heap.leftOf(19));
 		assertEquals(14,heap.rightOf(19));
+		
+		
 	}
+	@Test
+	public void testMaxHeapBug()
+	{
+		//293, 35, 118, 56, 209, 358, 784, 259, 110, 245
+		heap.insert(293);
+		heap.insert(35);
+		heap.insert(118);
+		heap.insert(56);
+		heap.insert(209);
+		heap.insert(358);
+		heap.insert(784);
+		heap.insert(259);
+		heap.insert(110);
+		heap.insert(245);
+		/*
+					 784
+			        /   \
+		       259      358
+		       /\       /  \ 
+		   209    245   118  293
+		  /\       /
+		35  110.   56
+		
+		
+		         784
+		        /      \
+		       259      358
+		      / \.       /\
+		    209  245.  118  293
+		    /\.    /
+		   35  110 56
+		 * */
+		
+		Integer root = heap.getRoot();
+		assertEquals(784,root);
+		
+		assertEquals(259,heap.leftOf(root));
+		assertEquals(358,heap.rightOf(root));
+		
+		assertEquals(209,heap.leftOf(259));
+		assertEquals(245,heap.rightOf(259));
+		
+		assertEquals(118,heap.leftOf(358));
+		assertEquals(293,heap.rightOf(358));
+		
+		assertEquals(35,heap.leftOf(209));
+		assertEquals(110,heap.rightOf(209));
+		
+		assertEquals(56,heap.leftOf(245));
+		
+		//int[]output = new int[]{784, 358, 293, 259, 245, 209, 118, 56, 110, 35};
+		int[]output = new int[]{784, 358, 293, 259, 245, 209, 118,  110,56, 35};
+		
+		for(int i=0;i<output.length;i++)
+		{
+			assertEquals(output[i],heap.remove());
+		}
+		
+	}
+	
+	@Test
+	public void testReplicate()
+	{
+		// 209, 118, 56, 110, 35
+		
+		heap.insert(118);
+		heap.insert(110);
+		heap.insert(35);
+		heap.insert(56);
+		
+		assertEquals(118,heap.remove());
+		assertEquals(110,heap.remove());
+		assertEquals(56,heap.remove());
+		assertEquals(35,heap.remove());
+		
+	}
+	
 }
