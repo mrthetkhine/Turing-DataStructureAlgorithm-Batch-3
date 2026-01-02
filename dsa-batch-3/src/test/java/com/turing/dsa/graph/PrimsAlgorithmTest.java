@@ -8,10 +8,10 @@ import java.util.ArrayList;
 
 import org.junit.jupiter.api.Test;
 
-public class WeightedGraphTest {
+public class PrimsAlgorithmTest {
 	WeightedGraph graph = new WeightedGraph();
 	
-	WeightedGraphTest()
+	PrimsAlgorithmTest()
 	{
 		graph.addVertice("A");
 		graph.addVertice("B");
@@ -34,7 +34,7 @@ public class WeightedGraphTest {
 		assertNotNull(graph.edgeExist2("B","C"));
 		assertNotNull(graph.edgeExist2("C","B"));
 	}
-	@Test
+	//@Test
 	public void testRechableVertexPrims()
 	{
 		/*
@@ -70,5 +70,57 @@ public class WeightedGraphTest {
 		
 		assertEquals(2,smallest.weight);
 	}
-	
+	@Test
+	public void testRechableVertexPrims2()
+	{
+		/*
+		
+		 *  B-B 10
+		 *  A-C 4
+		 *  A-D 8
+		 *  
+		 *  B-C 2
+		 *  C-D 2
+		 * */
+		graph.addEdge("A","B",10);
+		graph.addEdge("A","C",4);
+		graph.addEdge("A","D",8);
+		
+		graph.addEdge("B","C",2);
+		graph.addEdge("C","D",2);
+		
+		ArrayList<String> visited = new ArrayList<>();
+		visited.add("A");
+		visited.add("C");
+		
+		Edge smallest = graph.getSmallestEdgeFromUnvisited(visited);
+		
+		assertEquals(2,smallest.weight);
+	}
+	@Test
+	public void testPrim()
+	{
+		/*
+		
+		 *  B-B 10
+		 *  A-C 4
+		 *  A-D 8
+		 *  
+		 *  B-C 2
+		 *  C-D 2
+		 * */
+		graph.addEdge("A","B",10);
+		graph.addEdge("A","C",4);
+		graph.addEdge("A","D",8);
+		
+		graph.addEdge("B","C",2);
+		graph.addEdge("C","D",2);
+		
+		WeightedGraph primsGraph = graph.prims();
+		
+		assertEquals(3,primsGraph.edges.size());
+		assertNotNull(primsGraph.edgeExist2("A","C"));
+		assertNotNull(primsGraph.edgeExist2("B","C"));
+		assertNotNull(primsGraph.edgeExist2("C","D"));
+	}
 }

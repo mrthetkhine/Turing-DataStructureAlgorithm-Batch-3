@@ -19,9 +19,18 @@ public class Edge implements Comparable<Edge>{
 		return ( this.from.equals(from) && this.to.equals(to)) ||
 				(this.to.equals(from) && this.from.equals(to));
 	}
+	
+	public boolean isRechableFromVertex(String vertex)
+	{
+		return this.from.equals(vertex) || this.to.equals(vertex);
+	}
 	@Override
 	public int compareTo(Edge o) {
 		
 		return this.weight - o.weight;
+	}
+	public boolean sameEdge(Edge e) {
+		
+		return this.sameEdge(e.from,e.to);
 	}
 }
